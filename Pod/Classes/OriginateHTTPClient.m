@@ -543,7 +543,7 @@ NSString* const OriginateHTTPClientResponseNotification = @"com.originate.http-c
 + (NSError *)errorEmptyResponse
 {
     return [NSError errorWithDomain:[[self class] errorDomain]
-                               code:2
+                               code:3
                            userInfo:@{ NSLocalizedDescriptionKey : @"The response was empty." }];
 }
 
