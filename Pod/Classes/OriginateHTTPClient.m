@@ -358,6 +358,10 @@ evaluateLocationHeader:(BOOL)evaluateLocationHeader
         result = [NSJSONSerialization JSONObjectWithData:data
                                                  options:NSJSONReadingAllowFragments
                                                    error:&error];
+        
+        if (error) {
+            error = [[self class] errorDecodingJSON];
+        }
     }
     else {
         result = [[NSString alloc] initWithData:data
@@ -398,6 +402,9 @@ evaluateLocationHeader:(BOOL)evaluateLocationHeader
     if (statusCode >= 200 && statusCode <= 299) { // Success Range. No error.
         return nil;
     }
+    else if (responseError.code == kCFURLErrorTimedOut) {
+        error = [[self class] errorTimeout];
+    }
     else {
         error = [[self class] HTTPErrorForCode:statusCode
                            withUnderlyingError:responseError];
@@ -422,7 +429,7 @@ evaluateLocationHeader:(BOOL)evaluateLocationHeader
 {
     return [NSError errorWithDomain:[[self class] errorDomain]
                                code:2
-                           userInfo:@{ NSLocalizedDescriptionKey : @"The server's response cannot be processed." }];
+                           userInfo:@{ NSLocalizedDescriptionKey : @"The server's response cannot be processed (Invalid JSON)." }];
 }
 
 + (NSError *)errorTimeout
@@ -446,23 +453,16 @@ evaluateLocationHeader:(BOOL)evaluateLocationHeader
     switch (code) {
         case 400:
             return @"The request could not be understood by the server due to malformed syntax.";
-            break;
         case 401:
             return @"The request requires user authentication.";
-            break;
         case 403:
             return @"The server understood the request, but is refusing to fulfill it.";
-            break;
         case 409:
             return @"The request could not be completed due to a conflict with the current state of the resource.";
-            break;
-            
         case 500:
             return @"The server encountered an unexpected condition which prevented it from fulfilling the request.";
-            
         default:
             return @"An unknown error occured";
-            break;
     }
 }
 
