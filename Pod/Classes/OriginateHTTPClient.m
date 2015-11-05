@@ -31,7 +31,7 @@ NSString* const OriginateHTTPClientResponseNotification = @"com.originate.http-c
 - (NSTimeInterval)timeoutInterval
 {
     if (_timeoutInterval == 0) {
-        _timeoutInterval = 30.0;
+        _timeoutInterval = 45.0;
     }
 
     return _timeoutInterval;
