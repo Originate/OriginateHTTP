@@ -62,7 +62,7 @@ NSString * const OriginateHTTPClientResponseNotification = @"com.originate.http-
 
 - (NSDictionary *)baseHeadersWithAdditionalHeaders:(NSDictionary *)additional
 {
-    if (!additional || [additional allKeys].count == 0) {
+    if (additional.count == 0) {
         return self.baseHeaders;
     }
     
