@@ -43,7 +43,7 @@ NSString * const OriginateHTTPClientResponseNotification = @"com.originate.http-
 - (NSString *)userAgent
 {
     if (!_userAgent) {
-        return @"OriginateHTTP/0.1 (iPhone; iOS 8_0+)";
+        _userAgent = @"OriginateHTTP/0.1 (iPhone; iOS 8_0+)";
     }
     
     return _userAgent;
